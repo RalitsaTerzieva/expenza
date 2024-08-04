@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, StyleSheet, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import {  StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ManageExpense from './../../screens/ManageExpense';
@@ -23,8 +23,20 @@ function ExpensesOverview() {
       },
       tabBarActiveTintColor: GlobalStyles.colors.accent500
     }}>
-      <BottomTabs.Screen name="RecentExpenses" component={RecentExpenses} />
-      <BottomTabs.Screen name="AllExpenses" component={AllExpenses} />
+      <BottomTabs.Screen name="RecentExpenses" component={RecentExpenses} options={{
+        title: 'Recent Expenses',
+        tabBarLabel: 'Recent',
+        tabBarIcon: ({color, size}) => (
+        <Ionicons name="hourglass" size={size} color={color}/>
+      )
+      }}/>
+      <BottomTabs.Screen name="AllExpenses" component={AllExpenses} options={{
+        title: 'All Expenses',
+        tabBarLabel: 'All Recent',
+        tabBarIcon: ({color, size}) => (
+        <Ionicons name="calendar" size={size} color={color}/>
+      )
+      }}/>
     </BottomTabs.Navigator>
   );
 }

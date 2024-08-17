@@ -3,7 +3,7 @@ import IconButton from '@/components/UI/IconButton';
 import Button from './../components/UI/Button';
 import { GlobalStyles } from '@/constants/Colors';
 import { useLayoutEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import { ExpensesContext } from '@/store/expense-context';
 
 function ManageExpense({route, navigation}) {
@@ -41,6 +41,7 @@ function ManageExpense({route, navigation}) {
 
     return (
     <View style={styles.container}>
+        <TextInput/>
         <View style={styles.buttons}>
             <Button style={styles.button} mode='flat' onPress={cancelHandler}>Cancel</Button>
             <Button style={styles.button} mode='flat' onPress={confirmHandler}>{isEditing ? 'Update' : 'Add'}</Button>

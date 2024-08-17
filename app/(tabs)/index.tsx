@@ -52,7 +52,7 @@ function ExpensesOverview() {
 export default function App() {
   return (
     <ExpenseContextProvider>
-        <StatusBar style="auto" />
+        <StatusBar style="light" />
         <Stack.Navigator screenOptions={() => ({
           headerStyle: {backgroundColor: GlobalStyles.colors.primary500, headerTintColor: 'white'}
         })}>

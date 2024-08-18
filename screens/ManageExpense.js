@@ -28,12 +28,25 @@ function ManageExpense({route, navigation}) {
 
     function cancelHandler() {
         navigation.goBack();
-       }
+    }
+
+    function confirmHandler(expenseData) {
+        if (isEditing) {
+            expenseCtx.updateExpense(editedExpenseId, expenseData);
+        } else {
+            expenseCtx.addExpense(expenseData);
+        }
+        navigation.goBack();
+    }
 
 
     return (
     <View style={styles.container}>
-        <ExpenseForm onCancel={cancelHandler} submitButtonLabel={isEditing ? 'Update' : 'Add'} />
+        <ExpenseForm 
+            onCancel={cancelHandler} 
+            submitButtonLabel={isEditing ? 'Update' : 'Add'}
+            onSubmit={confirmHandler}
+        />
         
         {isEditing && 
         <View style={styles.deleteContainer}>

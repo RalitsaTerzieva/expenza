@@ -4,7 +4,7 @@ import Button from './../UI/Button';
 
 import Input from './Input';
 
-function ExpenseForm({route, navigation, onCancel, submitButtonLabel}) {
+function ExpenseForm({ onCancel, submitButtonLabel, onSubmit}) {
   const [inputValues, setInputValues] = useState({
     amount: '',
     date: '',
@@ -20,14 +20,15 @@ function ExpenseForm({route, navigation, onCancel, submitButtonLabel}) {
     });
   }
 
-   function confirmHandler() {
-    if(isEditing) {
-        expenseCtx.updateExpense(editedExpenseId, {description: 'Test!!!!', amount: 29.99, date: new Date()});
-    } else {
-        expenseCtx.addExpense({description: 'Test', amount: 19.99, date: new Date()});
-    }
-    navigation.goBack();
-   }
+  function submitHandler() {
+    const expenseData = {
+      amount: +inputValues.amount,
+      date: new Date(inputValues.date),
+      description: inputValues.description
+    };
+
+    onSubmit(expenseData);
+  }
 
 
   return (
@@ -66,7 +67,7 @@ function ExpenseForm({route, navigation, onCancel, submitButtonLabel}) {
       />
       <View style={styles.buttons}>
             <Button style={styles.button} mode='flat' onPress={onCancel}>Cancel</Button>
-            <Button style={styles.button} mode='flat' onPress={confirmHandler}>
+            <Button style={styles.button} mode='flat' onPress={submitHandler}>
                 {submitButtonLabel}
             </Button>
         </View>

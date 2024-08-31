@@ -7,9 +7,11 @@ import { ExpensesContext } from '@/store/expense-context';
 import ExpenseForm from './../components/ManageExpense/ExpenseForm';
 import { storeExpense, updateExpense, deleteExpense } from './../util/http';
 import LoadingOverlay from './../components/UI/LoadingOverlay';
+import ErrorOverlay from './../components/UI/ErrorOverlay';
 
 function ManageExpense({route, navigation}) {
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState();
     const expenseCtx = useContext(ExpensesContext);
     const editedExpenseId = route.params?.expenseId;
     const isEditing = !!editedExpenseId;
@@ -26,14 +28,15 @@ function ManageExpense({route, navigation}) {
 
     async function deleteExpenseHandler() {
         setIsSubmitting(true);
-        if (editedExpenseId) {
-            await deleteExpense(editedExpenseId);
-            expenseCtx.deleteExpense(editedExpenseId);
-            navigation.goBack();
-        } else {
-            console.warn('No expense ID found to delete.');
+        try {
+          await deleteExpense(editedExpenseId);
+          expenseCtx.deleteExpense(editedExpenseId);
+          navigation.goBack();
+        } catch (error) {
+          setError('Could not delete expense - please try again later!');
+          setIsSubmitting(false);
         }
-    }
+      }
 
     function cancelHandler() {
         navigation.goBack();
@@ -41,14 +44,27 @@ function ManageExpense({route, navigation}) {
 
     async function confirmHandler(expenseData) {
         setIsSubmitting(true);
-        if (isEditing) {
+        try {
+          if (isEditing) {
             expenseCtx.updateExpense(editedExpenseId, expenseData);
             await updateExpense(editedExpenseId, expenseData);
-        } else {
+          } else {
             const id = await storeExpense(expenseData);
             expenseCtx.addExpense({ ...expenseData, id: id });
+          }
+          navigation.goBack();
+        } catch (error) {
+          setError('Could not save data - please try again later!');
+          setIsSubmitting(false);
         }
-        navigation.goBack();
+      }
+
+    function errorHandler() {
+        setError(null);
+    }
+
+    if (error && !setIsSubmitting) {
+        return <ErrorOverlay message={error} onConfirm={errorHandler} />;
     }
 
     if (isSubmitting) {

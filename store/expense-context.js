@@ -22,7 +22,7 @@ function expensesReducer(state, action) {
             if ( updatableExpenseIndex === -1) return state;
             const updatedExpense = { ...state[updatableExpenseIndex], ...action.payload.data };
             return [
-                ...state.slice(0, updatableExpenseExpenseIndex), 
+                ...state.slice(0, updatableExpenseIndex), 
                 updatedExpense, 
                 ...state.slice(updatableExpenseIndex + 1)
             ];

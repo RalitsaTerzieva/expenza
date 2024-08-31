@@ -2,27 +2,27 @@ import axios from 'axios';
 
 const BACKEND_URL = 'https://react-native-course-e29fb-default-rtdb.europe-west1.firebasedatabase.app';
 
-export function storeExpense(expenseData) {
-    return axios.post(`${BACKEND_URL}/expenses.json`, expenseData)
-      .then(response => {
-        console.log('Data stored successfully:', response.data);
-        return response.data;
-      })
-      .catch(error => {
-        if (error.response) {
-          // Server responded with a status other than 200 range
-          console.error('Error storing data:', error.response.data);
-          console.error('Status:', error.response.status);
-          console.error('Headers:', error.response.headers);
-        } else if (error.request) {
-          // Request was made but no response was received
-          console.error('Error with request:', error.request);
-        } else {
-          // Something else happened
-          console.error('Error:', error.message);
-        }
-        throw error;  // Re-throw the error to be handled by the caller if necessary
-      });
+export async function storeExpense(expenseData) {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/expenses.json`, expenseData);
+      const id = response.data.name;
+      console.log('Data stored successfully with ID:', id);
+      return id;
+    } catch (error) {
+      if (error.response) {
+        // Server responded with a status other than 200 range
+        console.error('Error storing data:', error.response.data);
+        console.error('Status:', error.response.status);
+        console.error('Headers:', error.response.headers);
+      } else if (error.request) {
+        // Request was made but no response was received
+        console.error('Error with request:', error.request);
+      } else {
+        // Something else happened
+        console.error('Error:', error.message);
+      }
+      throw error;  // Re-throw the error to be handled by the caller if necessary
+    }
   }
 
 export async function fetchExpenses() {
